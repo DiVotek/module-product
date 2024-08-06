@@ -77,6 +77,6 @@ class Product extends Model
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'category_products', 'category_id', 'product_id');
+        return $this->belongsToMany(Category::class, 'category_products', 'category_id', 'product_id')->withPivot('sorting');
     }
 }

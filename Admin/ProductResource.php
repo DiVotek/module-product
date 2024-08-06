@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Modules\Product\Admin\ProductResource\RelationManagers\CategoryRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\ReviewsRelationManager;
 use Modules\Product\Models\Product;
 use Modules\Seo\Admin\SeoResource\Pages\SeoRelationManager;
@@ -138,6 +139,7 @@ class ProductResource extends Resource
                 TranslatableRelationManager::class,
                 SeoRelationManager::class,
                 ReviewsRelationManager::class,
+                CategoryRelationManager::class,
             ]),
         ];
     }
