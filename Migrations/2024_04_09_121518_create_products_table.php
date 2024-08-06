@@ -26,7 +26,7 @@ return new class extends Migration
             $table->json('template')->default(json_encode([]));
             Product::timestampFields($table);
         });
-        StaticPage::createSystemPage('Product', 'product');
+        StaticPage::createSystemPage('Catalog', 'catalog');
     }
 
     /**

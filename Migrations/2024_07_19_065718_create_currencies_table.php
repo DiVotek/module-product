@@ -1,6 +1,5 @@
 <?php
 
-use App\Services\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +21,27 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        Currency::query()->create([
+            'name' => '$',
+            'code' => 'USD',
+            'number' => '840',
+            'status' => 1,
+            'rate' => 1,
+        ]);
+        Currency::query()->create([
+            'name' => '€',
+            'code' => 'EUR',
+            'number' => '978',
+            'status' => 1,
+            'rate' => 1,
+        ]);
+        Currency::query()->create([
+            'name' => '₴',
+            'code' => 'UAH',
+            'number' => '980',
+            'status' => 1,
+            'rate' => 1,
+        ]);
     }
 
     /**

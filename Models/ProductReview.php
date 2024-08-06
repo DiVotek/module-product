@@ -14,10 +14,6 @@ class ProductReview extends Model
     use HasStatus;
     use HasTimestamps;
 
-    public const TABLE = 'product_reviews';
-
-    protected $table = self::TABLE;
-
     protected $fillable = [
         'name',
         'product_id',

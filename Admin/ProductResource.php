@@ -24,7 +24,7 @@ class ProductResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Category');
+        return __('Catalog');
     }
 
     public static function getNavigationBadge(): ?string
@@ -124,6 +124,11 @@ class ProductResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScopes();
     }
 
     public static function getRelations(): array

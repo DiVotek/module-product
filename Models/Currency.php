@@ -13,10 +13,6 @@ class Currency extends Model
     use HasStatus;
     use HasTimestamps;
 
-    public const TABLE = 'currencies';
-
-    protected $table = self::TABLE;
-
     protected $fillable = ['name', 'code', 'number', 'rate', 'status'];
 
     public static function getDb(): string
