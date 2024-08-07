@@ -135,17 +135,17 @@ class ProductResource extends Resource
 
     public static function getRelations(): array
     {
-        $relationGroup = [
+        $relations = [
             TranslatableRelationManager::class,
             SeoRelationManager::class,
             ReviewsRelationManager::class,
         ];
         if (Module::find('Category') && Module::find('Category')->isEnabled()) {
-            $relationGroup[] = CategoryRelationManager::class;
+            $relations[] = CategoryRelationManager::class;
         }
 
         return [
-            RelationGroup::make('Seo and translates', $relationGroup),
+            RelationGroup::make('Seo and translates', $relations),
         ];
     }
 
