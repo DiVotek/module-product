@@ -2,7 +2,6 @@
 
 namespace Modules\Product\Admin;
 
-use Modules\Product\Admin\ProductResource\Pages;
 use App\Filament\Resources\TranslateResource\RelationManagers\TranslatableRelationManager;
 use App\Models\Setting;
 use App\Services\Schema;
@@ -14,10 +13,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Modules\Product\Admin\ProductResource\Pages;
 use Modules\Product\Admin\ProductResource\RelationManagers\CategoryRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\ReviewsRelationManager;
 use Modules\Product\Models\Product;
 use Modules\Seo\Admin\SeoResource\Pages\SeoRelationManager;
+use Nwidart\Modules\Facades\Module;
 
 class ProductResource extends Resource
 {
@@ -55,7 +56,7 @@ class ProductResource extends Resource
                         Schema::getStatus(),
                         Schema::getSku(),
                         Schema::getPrice(),
-                        Schema::getImage('images', isMultiple: true)
+                        Schema::getImage('images', isMultiple: true),
                     ]),
             ]);
     }
@@ -70,7 +71,7 @@ class ProductResource extends Resource
                 TableSchema::getSku(),
                 TableSchema::getPrice(),
                 TableSchema::getViews(),
-                TableSchema::getUpdatedAt()
+                TableSchema::getUpdatedAt(),
             ])
             ->headerActions([
                 Action::make(__('Help'))
@@ -100,13 +101,13 @@ class ProductResource extends Resource
                     ->fillForm(function (): array {
                         return [
                             'template' => setting(config('settings.product.template'), []),
-                            'design' => setting(config('settings.product.design'), 'Zero')
+                            'design' => setting(config('settings.product.design'), 'Zero'),
                         ];
                     })
                     ->action(function (array $data): void {
                         setting([
                             config('settings.product.template') => $data['template'],
-                            config('settings.product.design') => $data['design']
+                            config('settings.product.design') => $data['design'],
                         ]);
                         Setting::updatedSettings();
                     })
@@ -118,7 +119,7 @@ class ProductResource extends Resource
                                     Schema::getTemplateBuilder()->label(__('Template')),
                                 ]),
                             ]);
-                    })
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -134,13 +135,17 @@ class ProductResource extends Resource
 
     public static function getRelations(): array
     {
+        $relationGroup = [
+            TranslatableRelationManager::class,
+            SeoRelationManager::class,
+            ReviewsRelationManager::class,
+        ];
+        if (Module::find('Category') && Module::find('Category')->isEnabled()) {
+            $relationGroup[] = CategoryRelationManager::class;
+        }
+
         return [
-            RelationGroup::make('Seo and translates', [
-                TranslatableRelationManager::class,
-                SeoRelationManager::class,
-                ReviewsRelationManager::class,
-                CategoryRelationManager::class,
-            ]),
+            RelationGroup::make('Seo and translates', $relationGroup),
         ];
     }
 

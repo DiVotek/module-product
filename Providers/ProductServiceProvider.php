@@ -2,7 +2,6 @@
 
 namespace Modules\Product\Providers;
 
-use App;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -20,15 +19,14 @@ class ProductServiceProvider extends ServiceProvider
                 $currency = Currency::first()->id ?? 0;
             }
             $currency = Currency::find($currency);
+
             return $currency;
         });
         $this->loadMigrations();
         Route::middleware('web')->group(module_path('Product', 'routes/web.php'));
     }
 
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 
     private function loadMigrations(): void
     {

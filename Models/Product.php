@@ -4,6 +4,7 @@ namespace Modules\Product\Models;
 
 use App\Traits\HasAttributes;
 use App\Traits\HasBreadcrumbs;
+use App\Traits\HasCategory;
 use App\Traits\HasPromotion;
 use App\Traits\HasReviews;
 use App\Traits\HasSlug;
@@ -15,26 +16,25 @@ use App\Traits\HasTranslate;
 use App\Traits\HasViews;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Modules\Category\Models\Category;
 use Modules\Seo\Traits\HasSeo;
 
 class Product extends Model
 {
+    use HasAttributes;
+    use HasBreadcrumbs;
+    use HasCategory;
     use HasFactory;
-    use HasStatus;
-    use HasSorting;
+    use HasPromotion;
+    use HasReviews;
     use HasSeo;
     use HasSlug;
-    use HasViews;
-    use HasBreadcrumbs;
-    use HasPromotion;
+    use HasSorting;
+    use HasStatus;
     use HasSticker;
-    use HasAttributes;
-    use HasReviews;
     use HasTimestamps;
     use HasTranslate;
+    use HasViews;
 
     protected $fillable = [
         'name',
@@ -45,12 +45,12 @@ class Product extends Model
         'price',
         'views',
         'images',
-        'template'
+        'template',
     ];
 
     protected $casts = [
         'images' => 'array',
-        'template' => 'array'
+        'template' => 'array',
     ];
 
     public static function getDb(): string
@@ -73,10 +73,5 @@ class Product extends Model
     public function productReviews(): HasMany
     {
         return $this->hasMany(ProductReview::class);
-    }
-
-    public function categories(): BelongsToMany
-    {
-        return $this->belongsToMany(Category::class, 'category_products', 'category_id', 'product_id')->withPivot('sorting');
     }
 }

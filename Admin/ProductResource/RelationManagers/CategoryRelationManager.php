@@ -25,7 +25,7 @@ class CategoryRelationManager extends RelationManager
                     ->maxLength(255),
                 TextInput::make('sorting')
                     ->numeric()
-                    ->default(0)
+                    ->default(0),
             ]);
     }
 
@@ -36,7 +36,7 @@ class CategoryRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->url(fn ($record): string => CategoryResource::getUrl('edit', [
-                        'record' => $record->id
+                        'record' => $record->id,
                     ])),
                 TableSchema::getStatus()
                     ->label(__('Status'))
@@ -46,7 +46,7 @@ class CategoryRelationManager extends RelationManager
                         $status = $state;
                         DB::table('category_products')->where('category_id', $category_id)->where('product_id', $product_id)->update(['status' => $status]);
                     }),
-                TableSchema::getUpdatedAt()
+                TableSchema::getUpdatedAt(),
             ])
             ->filters([
                 //

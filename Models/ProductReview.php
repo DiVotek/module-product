@@ -20,7 +20,7 @@ class ProductReview extends Model
         'rating',
         'image',
         'comment',
-        'status'
+        'status',
     ];
 
     public function product(): BelongsTo

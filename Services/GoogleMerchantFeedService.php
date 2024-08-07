@@ -2,21 +2,18 @@
 
 namespace Modules\Product\Services;
 
-use App\Models\Category;
-use App\Models\Currency;
-use App\Models\Manufacturer;
-use App\Models\Product;
-use App\Models\Setting;
-use App\Models\StockStatus;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Modules\Product\Models\Product;
+use Modules\Seo\Models\Seo;
 
 class GoogleMerchantFeedService
 {
     public static function update(): string
     {
-        $siteName = Setting::find(Setting::NAME)->value ?? '';
-        $companyDescription = Setting::find(Setting::COMPANY_DESCRIPTION)->value ?? '';
-        $siteUrl = env('APP_URL');
+        $siteName = setting(config('settings.company_name'), '');
+        $companyDescription = setting(config('settings.company_description'), '');
+        $siteUrl = url('/');
         $items = '';
         $products = Product::query()->get();
         $lastProduct = $products->last();
@@ -51,22 +48,27 @@ class GoogleMerchantFeedService
 
     private static function buildProductData(mixed $product): array
     {
-        $currency = app('currency')->code;
-        $country = Setting::find(Setting::COUNTRY)->value ?? '';
+        $currency = app('currency')->code ?? '';
+        $country = setting(config('settings.country'), '');
 
         $data = [
             'g:id' => $product->id,
             'g:title' => $product->name,
-            'g:description' => $product->description,
+            'g:description' => DB::table(Seo::getDb())
+                ->where('language_id', main_lang_id())
+                ->where('seoable_id', $product->id)
+                ->where('seoable_type', 'Modules\Product\Models\Product')
+                ->first()
+                    ->description ?? '',
             'g:link' => asset($product->slug),
-            'g:image_link' => isset($product->image[0]) ? asset('storage' . $product->image[0]) : '',
+            'g:image_link' => isset($product->images[0]) ? asset('storage' . $product->images[0]) : '',
             'g:condition' => 'new',
             'g:targetCountry' => $country,
             'g:adult' => 'no',
             'g:availability' => 'in stock',
             'g:availability_date' => Carbon::parse($product->created_at)->addYear()->format('Y-m-d\TH:iO'),
             'g:price' => "{$product->price} {$currency}",
-            'g:brand' => name(),
+            'g:brand' => company_name(),
         ];
 
         return $data;
