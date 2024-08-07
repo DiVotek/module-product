@@ -16,6 +16,7 @@ use Filament\Tables\Table;
 use Modules\Product\Admin\ProductResource\Pages;
 use Modules\Product\Admin\ProductResource\RelationManagers\CategoryRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\ReviewsRelationManager;
+use Modules\Product\Admin\ProductResource\RelationManagers\StickerRelationManager;
 use Modules\Product\Models\Product;
 use Modules\Seo\Admin\SeoResource\Pages\SeoRelationManager;
 use Nwidart\Modules\Facades\Module;
@@ -143,6 +144,7 @@ class ProductResource extends Resource
         if (Module::find('Category') && Module::find('Category')->isEnabled()) {
             $relations[] = CategoryRelationManager::class;
         }
+        $relations[] = StickerRelationManager::class;
 
         return [
             RelationGroup::make('Seo and translates', $relations),

@@ -69,9 +69,4 @@ class Product extends Model
             $this->name => $this->route(),
         ];
     }
-
-    public function productReviews(): HasMany
-    {
-        return $this->hasMany(ProductReview::class);
-    }
 }
