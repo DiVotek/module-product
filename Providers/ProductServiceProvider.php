@@ -14,7 +14,7 @@ class ProductServiceProvider extends ServiceProvider
     public function boot(): void
     {
         app()->bind('currency', function () {
-            $currency = (int) Setting::find(Setting::MAIN_CURRENCY)->value;
+            $currency = setting(config('settings.main_currency'),0);
             if ($currency <= 0) {
                 $currency = Currency::first()->id ?? 0;
             }
@@ -22,6 +22,10 @@ class ProductServiceProvider extends ServiceProvider
 
             return $currency;
         });
+        $this->mergeConfigFrom(
+            module_path('Product', 'config/settings.php'),
+            'settings'
+        );
         $this->loadMigrations();
         Route::middleware('web')->group(module_path('Product', 'routes/web.php'));
     }

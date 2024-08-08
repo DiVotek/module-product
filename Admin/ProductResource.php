@@ -58,6 +58,7 @@ class ProductResource extends Resource
                         Schema::getSku(),
                         Schema::getPrice(),
                         Schema::getImage('images', isMultiple: true),
+                        Schema::getTemplateBuilder(),
                     ]),
             ]);
     }
@@ -102,7 +103,7 @@ class ProductResource extends Resource
                     ->fillForm(function (): array {
                         return [
                             'template' => setting(config('settings.product.template'), []),
-                            'design' => setting(config('settings.product.design'), 'Zero'),
+                            'design' => setting(config('settings.product.design'), 'Base'),
                         ];
                     })
                     ->action(function (array $data): void {
@@ -144,8 +145,9 @@ class ProductResource extends Resource
         if (Module::find('Category') && Module::find('Category')->isEnabled()) {
             $relations[] = CategoryRelationManager::class;
         }
-        $relations[] = StickerRelationManager::class;
-
+        if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
+            $relations[] = StickerRelationManager::class;
+        }
         return [
             RelationGroup::make('Seo and translates', $relations),
         ];

@@ -10,7 +10,7 @@ class ProductPage extends PageComponent
     public function __construct(Product $entity)
     {
         if (empty($entity->template)) {
-            $entity->template = setting(config('settings.product.design'), []);
+            $entity->template = setting(config('settings.product.template'), []);
         }
         $component = setting(config('settings.product.design'), 'Base');
         $component = 'template.' . strtolower(template()) . '.pages.product.' . strtolower($component);

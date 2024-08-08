@@ -8,7 +8,7 @@ use Modules\Product\Controllers\ProductController;
 
 function product_slug()
 {
-    $productPage = StaticPage::query()->where('id', SystemPage::query()->where('name', 'Product')->first()->page_id ?? 0)->first();
+    $productPage = StaticPage::query()->where('id', SystemPage::query()->where('name', 'Catalog')->first()->page_id ?? 0)->first();
 
     return $productPage && $productPage->slug ? $productPage->slug : 'product';
 }
