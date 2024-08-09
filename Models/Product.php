@@ -16,7 +16,9 @@ use App\Traits\HasTranslate;
 use App\Traits\HasViews;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Filter\Models\Attribute;
 use Modules\Seo\Traits\HasSeo;
+use Nwidart\Modules\Facades\Module;
 
 class Product extends Model
 {
@@ -67,5 +69,12 @@ class Product extends Model
         return [
             $this->name => $this->route(),
         ];
+    }
+
+    public function attributes()
+    {
+        if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
+            return $this->belongsToMany(  Attribute::class, 'attribute_products', 'product_id', 'attribute_id' )->withPivot('language_id', 'value');
+        }
     }
 }

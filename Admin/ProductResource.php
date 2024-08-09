@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Modules\Product\Admin\ProductResource\Pages;
+use Modules\Product\Admin\ProductResource\RelationManagers\AttributeRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\CategoryRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\ReviewsRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\StickerRelationManager;
@@ -144,6 +145,9 @@ class ProductResource extends Resource
         ];
         if (Module::find('Category') && Module::find('Category')->isEnabled()) {
             $relations[] = CategoryRelationManager::class;
+        }
+        if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
+            $relations[] = AttributeRelationManager::class;
         }
         if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
             $relations[] = StickerRelationManager::class;
