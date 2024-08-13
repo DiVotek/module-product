@@ -19,6 +19,7 @@ use Modules\Product\Admin\ProductResource\RelationManagers\CategoryRelationManag
 use Modules\Product\Admin\ProductResource\RelationManagers\ReviewsRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\StickerRelationManager;
 use Modules\Product\Models\Product;
+use Modules\Search\Admin\TagResource\RelationManagers\TagRelationManager;
 use Modules\Seo\Admin\SeoResource\Pages\SeoRelationManager;
 use Nwidart\Modules\Facades\Module;
 
@@ -151,6 +152,9 @@ class ProductResource extends Resource
         }
         if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
             $relations[] = StickerRelationManager::class;
+        }
+        if (Module::find('Search') && Module::find('Search')->isEnabled()) {
+            $relations[] = TagRelationManager::class;
         }
         return [
             RelationGroup::make('Seo and translates', $relations),

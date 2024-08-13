@@ -11,6 +11,7 @@ use App\Traits\HasSlug;
 use App\Traits\HasSorting;
 use App\Traits\HasStatus;
 use App\Traits\HasSticker;
+use App\Traits\HasTags;
 use App\Traits\HasTimestamps;
 use App\Traits\HasTranslate;
 use App\Traits\HasViews;
@@ -36,6 +37,7 @@ class Product extends Model
     use HasTimestamps;
     use HasTranslate;
     use HasViews;
+    use HasTags;
 
     protected $fillable = [
         'name',
