@@ -2,7 +2,6 @@
 
 namespace Modules\Product\Admin;
 
-use App\Models\Section;
 use App\Models\Setting;
 use App\Services\Schema;
 use App\Services\TableSchema;
