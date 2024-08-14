@@ -59,7 +59,7 @@ class Product extends Model
 
     public function route(): string
     {
-        return tRoute('product', ['product' => $this->slug]);
+        return tRoute('slug', ['slug' => $this->slug]);
     }
 
     public function getBreadcrumbs(): array

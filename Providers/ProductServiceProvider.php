@@ -27,7 +27,6 @@ class ProductServiceProvider extends ServiceProvider
             'settings'
         );
         $this->loadMigrations();
-        Route::middleware('web')->group(module_path('Product', 'routes/web.php'));
     }
 
     public function register(): void {}
