@@ -5,6 +5,7 @@ namespace Modules\Product\Models;
 use App\Traits\HasAttributes;
 use App\Traits\HasBreadcrumbs;
 use App\Traits\HasCategory;
+use App\Traits\HasImages;
 use App\Traits\HasPromotion;
 use App\Traits\HasReviews;
 use App\Traits\HasSlug;
@@ -37,7 +38,8 @@ class Product extends Model
     use HasTimestamps;
     use HasTranslate;
     use HasViews;
-    use HasTags;
+    use HasImages;
+    // use HasTags;
 
     protected $fillable = [
         'name',
