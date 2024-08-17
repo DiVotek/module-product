@@ -13,6 +13,6 @@ class ProductPage extends PageComponent
             $entity->template = setting(config('settings.product.template'), []);
         }
 
-        parent::__construct($entity, 'order::product-component');
+        parent::__construct($entity, 'product::product-component');
     }
 }

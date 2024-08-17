@@ -27,6 +27,7 @@ class ProductServiceProvider extends ServiceProvider
             'settings'
         );
         $this->loadMigrations();
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'product');
     }
 
     public function register(): void {}
