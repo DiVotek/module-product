@@ -2,11 +2,13 @@
 
 namespace Modules\Product\Admin;
 
+use App\Filament\Resources\StaticPageResource\RelationManagers\TemplateRelationManager;
 use App\Filament\Resources\TranslateResource\RelationManagers\TranslatableRelationManager;
 use App\Models\Setting;
 use App\Services\Schema;
 use App\Services\TableSchema;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
@@ -49,6 +51,14 @@ class ProductResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $categoryField = [];
+        if (module_enabled('Category')) {
+            $categoryField = [
+                Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->native('false')->translateLabel(),
+            ];
+        }
         return $form
             ->schema([
                 Section::make()
@@ -58,6 +68,7 @@ class ProductResource extends Resource
                         Schema::getSorting(),
                         Schema::getStatus(),
                         Schema::getSku(),
+                        ...$categoryField,
                         Schema::getPrice(),
                         Schema::getImage('images', isMultiple: true),
                         Schema::getTemplateBuilder(),
@@ -156,6 +167,7 @@ class ProductResource extends Resource
         if (Module::find('Search') && Module::find('Search')->isEnabled()) {
             $relations[] = TagRelationManager::class;
         }
+        $relations[] = TemplateRelationManager::class;
         return [
             RelationGroup::make('Seo and translates', $relations),
         ];

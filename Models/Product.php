@@ -13,6 +13,7 @@ use App\Traits\HasSorting;
 use App\Traits\HasStatus;
 use App\Traits\HasSticker;
 use App\Traits\HasTags;
+use App\Traits\HasTemplate;
 use App\Traits\HasTimestamps;
 use App\Traits\HasTranslate;
 use App\Traits\HasViews;
@@ -39,6 +40,7 @@ class Product extends Model
     use HasTranslate;
     use HasViews;
     use HasImages;
+    use HasTemplate;
     // use HasTags;
 
     protected $fillable = [

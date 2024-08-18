@@ -4,7 +4,7 @@
          <div class="row gap-y-12">
             <div class="col-xs-8 col-s-6 md:pr-3.5">
                <div class="aspect-1 flex justify-center items-center bg-base-200">
-                  <x-core.image src="{{$product->image}}" alt="" width="144" heigth="144"
+                  <x-image src="{{$product->image}}" alt="" width="144" heigth="144"
                      class="size-36 object-contain" />
                </div>
             </div>
@@ -93,8 +93,8 @@
                   </div>
                </div>
                <div class="pt-6">
-                  <!-- <x-core.link href="#" title="Some title"
-                     class="link link-light underline mb-9 flex">Показати оптові ціни</x-core.link> -->
+                  <!-- <x-link href="#" title="Some title"
+                     class="link link-light underline mb-9 flex">Показати оптові ціни</x-link> -->
                   <button class="btn btn-dark mb-4" aria-label="{{ _t('Add to cart') }}" wire:click="addToCart()">
                      <svg class="size-5 text-base-content lg:group-hover:text-accent-content transition duration-200"
                         viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
