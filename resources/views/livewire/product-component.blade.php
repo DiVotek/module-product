@@ -13,7 +13,7 @@
                   <div class="pb-8">
                      <h1
                         class="text-xl xs:text-2xl lg:text-[2rem] uppercase text-base-content lg:max-w-[80%] mb-3 line-clamp-2">
-                        {{$product->seo->heading ?? $product->name}}
+                        {{$product->seo->heading ?? $product->name()}}
                      </h1>
                      <div class="mb-6">
                         <div class="inline-flex items-center gap-x-2">
