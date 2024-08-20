@@ -15,6 +15,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Modules\Options\Admin\ProductResource\RelationManagers\OptionValuesRelationManager;
+use Modules\Options\Admin\OptionResource\RelationManagers\ValuesRelationManager;
 use Modules\Product\Admin\ProductResource\Pages;
 use Modules\Product\Admin\ProductResource\RelationManagers\AttributeRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\CategoryRelationManager;
@@ -166,6 +168,9 @@ class ProductResource extends Resource
         }
         if (Module::find('Search') && Module::find('Search')->isEnabled()) {
             $relations[] = TagRelationManager::class;
+        }
+        if (module_enabled('Options')) {
+            $relations[] = OptionValuesRelationManager::class;
         }
         $relations[] = TemplateRelationManager::class;
         return [

@@ -80,7 +80,22 @@ class Product extends Model
     public function attributes()
     {
         if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
-            return $this->belongsToMany(  Attribute::class, 'attribute_products', 'product_id', 'attribute_id' )->withPivot('language_id', 'value');
+            return $this->belongsToMany(Attribute::class, 'attribute_products', 'product_id', 'attribute_id')->withPivot('language_id', 'value');
+        }
+    }
+
+    public function optionValues()
+    {
+        if (module_enabled('Options')) {
+            return $this->belongsToMany(\Modules\Options\Models\OptionValue::class, 'product_option')
+                ->withPivot('sign', 'price');
+        }
+    }
+    public function options()
+    {
+        if (module_enabled('Options')) {
+            return $this->hasManyThrough(\Modules\Options\Models\Option::class, \Modules\Options\Models\OptionValue::class, 'id', 'id', 'id', 'option_id')
+            ->distinct();
         }
     }
 }
