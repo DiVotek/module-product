@@ -2,17 +2,21 @@
 
 namespace Modules\Product\Admin;
 
+use App\Filament\Resources\StaticPageResource\RelationManagers\TemplateRelationManager;
 use App\Filament\Resources\TranslateResource\RelationManagers\TranslatableRelationManager;
 use App\Models\Setting;
 use App\Services\Schema;
 use App\Services\TableSchema;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Modules\Options\Admin\ProductResource\RelationManagers\OptionValuesRelationManager;
+use Modules\Options\Admin\OptionResource\RelationManagers\ValuesRelationManager;
 use Modules\Product\Admin\ProductResource\Pages;
 use Modules\Product\Admin\ProductResource\RelationManagers\AttributeRelationManager;
 use Modules\Product\Admin\ProductResource\RelationManagers\CategoryRelationManager;
@@ -49,6 +53,14 @@ class ProductResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $categoryField = [];
+        if (module_enabled('Category')) {
+            $categoryField = [
+                Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->native('false')->translateLabel(),
+            ];
+        }
         return $form
             ->schema([
                 Section::make()
@@ -58,6 +70,7 @@ class ProductResource extends Resource
                         Schema::getSorting(),
                         Schema::getStatus(),
                         Schema::getSku(),
+                        ...$categoryField,
                         Schema::getPrice(),
                         Schema::getImage('images', isMultiple: true),
                         Schema::getTemplateBuilder(),
@@ -150,12 +163,19 @@ class ProductResource extends Resource
          if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
              $relations[] = AttributeRelationManager::class;
          }
+        // if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
+        //     $relations[] = AttributeRelationManager::class;
+        // }
         if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
             $relations[] = StickerRelationManager::class;
         }
         if (Module::find('Search') && Module::find('Search')->isEnabled()) {
             $relations[] = TagRelationManager::class;
         }
+        if (module_enabled('Options')) {
+            $relations[] = OptionValuesRelationManager::class;
+        }
+        $relations[] = TemplateRelationManager::class;
         return [
             RelationGroup::make('Seo and translates', $relations),
         ];

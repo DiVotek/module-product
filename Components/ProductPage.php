@@ -14,5 +14,6 @@ class ProductPage extends PageComponent
         }
 
         parent::__construct($entity, 'order::product-component');
+        parent::__construct($entity, 'product::product-component');
     }
 }

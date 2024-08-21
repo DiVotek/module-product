@@ -20,10 +20,10 @@ return new class extends Migration
             $table->integer('sorting')->default(0);
             $table->boolean('status')->default(1);
             $table->string('sku')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->double('price')->nullable();
             $table->integer('views')->default(0);
             $table->json('images')->nullable();
-            $table->json('template')->default(json_encode([]));
             Product::timestampFields($table);
         });
         StaticPage::createSystemPage('Catalog', 'catalog');
