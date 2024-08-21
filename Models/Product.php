@@ -72,10 +72,14 @@ class Product extends Model
 
     public function getBreadcrumbs(): array
     {
-        return [
-            $this->name => $this->route(),
-        ];
+        $breadcrumbs = [];
+        if(module_enabled('Category') && $this->category()->exists()) {
+            $breadcrumbs = $this->category->getBreadcrumbs();
+        }
+        $breadcrumbs[$this->name] = $this->route();
+        return $breadcrumbs;
     }
+
 
     public function attributes()
     {
