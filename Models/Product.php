@@ -5,6 +5,7 @@ namespace Modules\Product\Models;
 use App\Traits\HasAttributes;
 use App\Traits\HasBreadcrumbs;
 use App\Traits\HasCategory;
+use App\Traits\HasImages;
 use App\Traits\HasPromotion;
 use App\Traits\HasReviews;
 use App\Traits\HasSlug;
@@ -37,6 +38,7 @@ class Product extends Model
     use HasTimestamps;
     use HasTranslate;
     use HasViews;
+    use HasImages;
     use HasTags;
 
     protected $fillable = [
@@ -63,7 +65,7 @@ class Product extends Model
 
     public function route(): string
     {
-        return tRoute('product', ['product' => $this->slug]);
+        return tRoute('slug', ['slug' => $this->slug]);
     }
 
     public function getBreadcrumbs(): array
