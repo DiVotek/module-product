@@ -22,9 +22,9 @@ class Product extends Microdata
 
     public function buildData(\Modules\Product\Models\Product $entity): array
     {
-        $currency = app('currency')->code;
+        $currency = setting('currency')->code;
         $product = \Modules\Product\Models\Product::find($entity->id);
-        $reviews = ProductReview::where('product_id', $entity->id)->get();
+        $reviews = ProductReview::query()->where('product_id', $entity->id)->get();
         $rating = $reviews->avg('rating');
         $stockStatus = 'http://schema.org/InStock';
 
@@ -35,7 +35,7 @@ class Product extends Microdata
             'sku' => $entity->sku ?? '',
             'brand' => (object) [
                 '@type' => 'Brand',
-                'name' => app('company_name') ?? '',
+                'name' => setting('company_name') ?? '',
             ],
             'review' => (object) [
                 '@type' => 'Review',
@@ -46,7 +46,7 @@ class Product extends Microdata
                 ],
                 'author' => (object) [
                     '@type' => 'Person',
-                    'name' => app('company_name') ?? ''
+                    'name' => setting('company_name') ?? ''
                 ],
             ],
             'aggregateRating' => (object) [
@@ -56,7 +56,7 @@ class Product extends Microdata
             ],
             'offers' => (object) [
                 '@type' => 'Offer',
-                'url' => request()->url() . '/' . $entity->slug,
+                'url' => \Modules\Product\Models\Product::route(),
                 'priceCurrency' => $currency,
                 'price' => $entity->price,
                 'priceValidUntil' => $product->updated_at->format('Y-m-d'),
@@ -64,7 +64,7 @@ class Product extends Microdata
                 'availability' => $stockStatus,
                 'seller' => (object) [
                     '@type' => 'Organization',
-                    'name' => app('company_name') ?? '',
+                    'name' => setting('company_name') ?? '',
                 ],
             ],
         ];

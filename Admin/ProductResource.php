@@ -73,7 +73,7 @@ class ProductResource extends Resource
                         ...$categoryField,
                         Schema::getPrice(),
                         Schema::getImage('images', isMultiple: true),
-                        Schema::getTemplateBuilder(),
+//                        Schema::getTemplateBuilder(),
                     ]),
             ]);
     }
@@ -163,9 +163,9 @@ class ProductResource extends Resource
          if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
              $relations[] = AttributeRelationManager::class;
          }
-        // if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
-        //     $relations[] = AttributeRelationManager::class;
-        // }
+         if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
+             $relations[] = AttributeRelationManager::class;
+         }
         if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
             $relations[] = StickerRelationManager::class;
         }

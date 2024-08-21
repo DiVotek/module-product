@@ -36,8 +36,10 @@ class Product extends Model
     use HasSorting;
     use HasStatus;
     use HasSticker;
+    use HasImages;
     use HasTimestamps;
     use HasTranslate;
+    use HasTemplate;
     use HasViews;
     use HasTags;
 
