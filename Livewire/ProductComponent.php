@@ -74,7 +74,9 @@ class ProductComponent extends Component
                     }
                 }
             }
-            $this->validate($validation);
+            if (!empty($validation)) {
+                $this->validate($validation);
+            }
             for ($i = 0; $i < $this->quantity; $i++) {
                 $this->dispatch('addToCart', $this->product->id, $this->selectedOptions);
             }
