@@ -56,8 +56,14 @@
                                  </svg>
                               </button>
                            </div>
-                           <span class="text-base text-base-content block">{{ _t('pcs') }}.</span>
                         </div>
+                        @if (setting(config('settings.product.measure')))
+                        @if ($product->measure && $product->measure_quantity)
+                        <span class="text-sm font-light text-neutral-content">{{_t('For')}} {{$product->measure_quantity}} {{_t($product->measure)}}</span>
+                        @else
+                        <span class="text-sm font-light text-neutral-content">{{_t('For')}} {{setting(config('settings.product.measure_quantity'))}} {{setting(config('settings.product.measure'))}}</span>
+                        @endif
+                        @endif
                      </div>
                   </div>
                   @foreach ($options as $option)
