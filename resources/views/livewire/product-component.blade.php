@@ -5,7 +5,7 @@
             <div class="col-xs-8 col-s-6 md:pr-3.5">
                <div class="aspect-1 flex justify-center items-center bg-base-200">
                   <x-image src="{{$product->image}}" alt="" width="144" heigth="144"
-                     class="size-36 object-contain" />
+                     class="w-full" />
                </div>
             </div>
             <div class="col-md-6 md:pl-3.5">
