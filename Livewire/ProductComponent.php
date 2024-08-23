@@ -18,6 +18,8 @@ class ProductComponent extends Component
     public function mount(Product $entity)
     {
         $this->product = $entity;
+        $this->options = [];
+        $this->selectedOptions = [];
         if (module_enabled('Options')) {
             $this->options = \Modules\Options\Models\Option::query()->whereIn('id', $this->product->optionValues()->pluck('option_id'))->get();
             foreach ($this->options as $option) {
@@ -74,7 +76,7 @@ class ProductComponent extends Component
             }
             $this->validate($validation);
             for ($i = 0; $i < $this->quantity; $i++) {
-                $this->dispatch('addToCart', $this->product->id,$this->selectedOptions);
+                $this->dispatch('addToCart', $this->product->id, $this->selectedOptions);
             }
             $this->quantity = 1;
         }
