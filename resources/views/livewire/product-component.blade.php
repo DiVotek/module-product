@@ -5,7 +5,7 @@
             <div class="col-xs-8 col-s-6 md:pr-3.5">
                <div class="aspect-1 flex justify-center items-center bg-base-200">
                   <x-image src="{{$product->image}}" alt="" width="144" heigth="144"
-                     class="size-36 object-contain" />
+                     class="w-full" />
                </div>
             </div>
             <div class="col-md-6 md:pl-3.5">
@@ -56,9 +56,15 @@
                                  </svg>
                               </button>
                            </div>
-                           <span class="text-base text-base-content block">{{ _t('pcs') }}.</span>
                         </div>
                      </div>
+                     @if (setting(config('settings.product.measure')))
+                        @if ($product->measure && $product->measure_quantity)
+                        <span class="text-sm font-light text-neutral-content">{{_t('For')}} {{$product->measure_quantity}} {{_t($product->measure)}}</span>
+                        @else
+                        <span class="text-sm font-light text-neutral-content">{{_t('For')}} {{setting(config('settings.product.measure_quantity'))}} {{setting(config('settings.product.measure'))}}</span>
+                        @endif
+                     @endif
                   </div>
                   @foreach ($options as $option)
                   <div class="pt-4 pb-8">
@@ -96,8 +102,8 @@
                         </svg>
                         {{ _t('Add to cart') }}
                      </button>
-                     <p class="text-base font-light text-base-content">Мінімальне замовлення 400 грн, також
-                        замовник отримує дисконт картку ( кешбек 4% )</p>
+                     <!-- <p class="text-base font-light text-base-content">Мінімальне замовлення 400 грн, також
+                        замовник отримує дисконт картку ( кешбек 4% )</p> -->
                   </div>
                </div>
             </div>

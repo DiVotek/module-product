@@ -53,6 +53,8 @@ class Product extends Model
         'views',
         'images',
         'template',
+        'measure',
+        'measure_quantity'
     ];
 
     protected $casts = [
@@ -83,7 +85,7 @@ class Product extends Model
 
     public function attributes()
     {
-        if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
+        if (module_enabled('Filter')) {
             return $this->belongsToMany(Attribute::class, 'attribute_products', 'product_id', 'attribute_id')->withPivot('language_id', 'value');
         }
     }

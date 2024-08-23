@@ -9,6 +9,7 @@ use App\Services\Schema;
 use App\Services\TableSchema;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
@@ -73,7 +74,8 @@ class ProductResource extends Resource
                         ...$categoryField,
                         Schema::getPrice(),
                         Schema::getImage('images', isMultiple: true),
-//                        Schema::getTemplateBuilder(),
+                        TextInput::make('measure')->default(setting(config('settings.product.measure'),'')),
+                        TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'),1))->numeric(),
                     ]),
             ]);
     }
@@ -119,12 +121,17 @@ class ProductResource extends Resource
                         return [
                             'template' => setting(config('settings.product.template'), []),
                             'design' => setting(config('settings.product.design'), 'Base'),
+                            'measure' => setting(config('settings.product.measure'), ''),
+                            'measure_quantity' => setting(config('settings.product.measure_quantity'), '1'),
                         ];
                     })
                     ->action(function (array $data): void {
                         setting([
                             config('settings.product.template') => $data['template'],
                             config('settings.product.design') => $data['design'],
+                            config('settings.product.design') => $data['design'],
+                            config('settings.product.measure') => $data['measure'],
+                            config('settings.product.measure_quantity') => $data['measure_quantity'],
                         ]);
                         Setting::updatedSettings();
                     })
@@ -135,6 +142,8 @@ class ProductResource extends Resource
                                 Section::make('')->schema([
                                     Schema::getTemplateBuilder()->label(__('Template')),
                                 ]),
+                                TextInput::make('measure'),
+                                TextInput::make('measure_quantity')->numeric(),
                             ]);
                     }),
             ])
@@ -160,12 +169,12 @@ class ProductResource extends Resource
         if (Module::find('Category') && Module::find('Category')->isEnabled()) {
             $relations[] = CategoryRelationManager::class;
         }
-         if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
-             $relations[] = AttributeRelationManager::class;
-         }
-         if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
-             $relations[] = AttributeRelationManager::class;
-         }
+        //  if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
+        //      $relations[] = AttributeRelationManager::class;
+        //  }
+        if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
+            $relations[] = AttributeRelationManager::class;
+        }
         if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
             $relations[] = StickerRelationManager::class;
         }
