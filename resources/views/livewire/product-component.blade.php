@@ -96,8 +96,8 @@
                         </svg>
                         {{ _t('Add to cart') }}
                      </button>
-                     <p class="text-base font-light text-base-content">Мінімальне замовлення 400 грн, також
-                        замовник отримує дисконт картку ( кешбек 4% )</p>
+                     <!-- <p class="text-base font-light text-base-content">Мінімальне замовлення 400 грн, також
+                        замовник отримує дисконт картку ( кешбек 4% )</p> -->
                   </div>
                </div>
             </div>
