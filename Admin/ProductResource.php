@@ -121,11 +121,7 @@ class ProductResource extends Resource
                     })->openUrlInNewTab(),
             ])
             ->headerActions([
-                Tables\Actions\Action::make(__('Help'))
-                    ->iconButton()
-                    ->icon('heroicon-o-question-mark-circle')
-                    ->modalDescription(__('Here you can manage blog categories. Blog categories are used to group blog articles. You can create, edit and delete blog categories as you want. Blog category will be displayed on the blog page or inside slider(modules section). If you want to disable it, you can do it by changing the status of the blog category.'))
-                    ->modalFooterActions([]),
+                Schema::helpAction('Product help text'),
                 Tables\Actions\Action::make('Template')
                     ->slideOver()
                     ->icon('heroicon-o-cog')
