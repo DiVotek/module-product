@@ -36,6 +36,11 @@ class CurrencyResource extends Resource
         return __('Currency');
     }
 
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScopes();
+    }
+
     public static function getPluralModelLabel(): string
     {
         return __('Currencies');
@@ -80,7 +85,7 @@ class CurrencyResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->headerActions([
