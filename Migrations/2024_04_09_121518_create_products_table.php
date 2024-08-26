@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->string('sku')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('manufacturer_id')->nullable();
             $table->double('price')->nullable();
             $table->integer('views')->default(0);
             $table->json('images')->nullable();

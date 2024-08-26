@@ -20,6 +20,7 @@ use App\Traits\HasViews;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Filter\Models\Attribute;
+use Modules\Manufacturer\Models\Manufacturer;
 use Modules\Seo\Traits\HasSeo;
 use Nwidart\Modules\Facades\Module;
 
@@ -54,7 +55,8 @@ class Product extends Model
         'images',
         'template',
         'measure',
-        'measure_quantity'
+        'measure_quantity',
+        'manufacturer_id',
     ];
 
     protected $casts = [
@@ -97,11 +99,19 @@ class Product extends Model
                 ->withPivot('sign', 'price');
         }
     }
+
     public function options()
     {
         if (module_enabled('Options')) {
             return $this->hasManyThrough(\Modules\Options\Models\Option::class, \Modules\Options\Models\OptionValue::class, 'id', 'id', 'id', 'option_id')
             ->distinct();
         }
+    }
+
+    public function manufacturer()
+    {
+        return Module::find('Manufacturer') && Module::find('Manufacturer')->isEnabled()
+            ? $this->belongsTo(Manufacturer::class, 'manufacturer_id')
+            : null;
     }
 }

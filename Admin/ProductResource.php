@@ -62,21 +62,27 @@ class ProductResource extends Resource
                     ->native('false')->translateLabel(),
             ];
         }
+        $arr1 = [
+            Schema::getReactiveName(),
+            Schema::getSlug(),
+            Schema::getSorting(),
+            Schema::getStatus(),
+        ];
+        if (Module::find('Manufacturer') && Module::find('Manufacturer')->isEnabled()) {
+            array_push($arr1, Schema::getManufacturer());
+        }
+        $arr2 = [
+            Schema::getSku(),
+            ...$categoryField,
+            Schema::getPrice(),
+            Schema::getImage('images', isMultiple: true),
+            TextInput::make('measure')->default(setting(config('settings.product.measure'),'')),
+            TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'),1))->numeric(),
+        ];
         return $form
             ->schema([
                 Section::make()
-                    ->schema([
-                        Schema::getReactiveName(),
-                        Schema::getSlug(),
-                        Schema::getSorting(),
-                        Schema::getStatus(),
-                        Schema::getSku(),
-                        ...$categoryField,
-                        Schema::getPrice(),
-                        Schema::getImage('images', isMultiple: true),
-                        TextInput::make('measure')->default(setting(config('settings.product.measure'),'')),
-                        TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'),1))->numeric(),
-                    ]),
+                    ->schema(array_merge($arr1, $arr2)),
             ]);
     }
 
