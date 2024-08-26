@@ -27,7 +27,7 @@ return new class extends Migration
             $table->json('images')->nullable();
             Product::timestampFields($table);
         });
-        StaticPage::createSystemPage('Catalog', 'catalog',path:'catalog-component');
+        StaticPage::createSystemPage('Catalog', 'catalog',path:'catalog-component',setting_key: 'catalog');
     }
 
     /**

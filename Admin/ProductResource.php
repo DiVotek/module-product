@@ -62,27 +62,28 @@ class ProductResource extends Resource
                     ->native('false')->translateLabel(),
             ];
         }
-        $arr1 = [
-            Schema::getReactiveName(),
-            Schema::getSlug(),
-            Schema::getSorting(),
-            Schema::getStatus(),
-        ];
+        $manufacturerField = [];
         if (Module::find('Manufacturer') && Module::find('Manufacturer')->isEnabled()) {
-            array_push($arr1, Schema::getManufacturer());
+            $manufacturerField = [
+                Schema::getManufacturer()
+            ];
         }
-        $arr2 = [
-            Schema::getSku(),
-            ...$categoryField,
-            Schema::getPrice(),
-            Schema::getImage('images', isMultiple: true),
-            TextInput::make('measure')->default(setting(config('settings.product.measure'),'')),
-            TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'),1))->numeric(),
-        ];
         return $form
             ->schema([
                 Section::make()
-                    ->schema(array_merge($arr1, $arr2)),
+                    ->schema([
+                        Schema::getReactiveName(),
+                        Schema::getSlug(),
+                        Schema::getSorting(),
+                        Schema::getStatus(),
+                        Schema::getSku(),
+                        ...$categoryField,
+                        ...$manufacturerField,
+                        Schema::getPrice(),
+                        Schema::getImage('images', isMultiple: true),
+                        TextInput::make('measure')->default(setting(config('settings.product.measure'), '')),
+                        TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'), 1))->numeric(),
+                    ]),
             ]);
     }
 
@@ -120,6 +121,11 @@ class ProductResource extends Resource
                     })->openUrlInNewTab(),
             ])
             ->headerActions([
+                Tables\Actions\Action::make(__('Help'))
+                    ->iconButton()
+                    ->icon('heroicon-o-question-mark-circle')
+                    ->modalDescription(__('Here you can manage blog categories. Blog categories are used to group blog articles. You can create, edit and delete blog categories as you want. Blog category will be displayed on the blog page or inside slider(modules section). If you want to disable it, you can do it by changing the status of the blog category.'))
+                    ->modalFooterActions([]),
                 Tables\Actions\Action::make('Template')
                     ->slideOver()
                     ->icon('heroicon-o-cog')
@@ -144,7 +150,7 @@ class ProductResource extends Resource
                     ->form(function ($form) {
                         return $form
                             ->schema([
-                                Schema::getModuleTemplateSelect('Pages/Product'),
+                                Schema::getModuleTemplateSelect('product'),
                                 Section::make('')->schema([
                                     Schema::getTemplateBuilder()->label(__('Template')),
                                 ]),
@@ -167,17 +173,10 @@ class ProductResource extends Resource
 
     public static function getRelations(): array
     {
-        $relations = [
-            TranslatableRelationManager::class,
-            SeoRelationManager::class,
-            ReviewsRelationManager::class,
-        ];
+        $relations = [];
         if (Module::find('Category') && Module::find('Category')->isEnabled()) {
             $relations[] = CategoryRelationManager::class;
         }
-        //  if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
-        //      $relations[] = AttributeRelationManager::class;
-        //  }
         if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
             $relations[] = AttributeRelationManager::class;
         }
@@ -190,9 +189,14 @@ class ProductResource extends Resource
         if (module_enabled('Options')) {
             $relations[] = OptionValuesRelationManager::class;
         }
-        $relations[] = TemplateRelationManager::class;
         return [
-            RelationGroup::make('Seo and translates', $relations),
+            RelationGroup::make('SEO and template', [
+                TranslatableRelationManager::class,
+                SeoRelationManager::class,
+                TemplateRelationManager::class
+            ]),
+            ReviewsRelationManager::class,
+            RelationGroup::make('Other', $relations),
         ];
     }
 

@@ -52,7 +52,7 @@ class ProductComponent extends Component
 
     public function render()
     {
-        return view('product::livewire.product-component');
+        return view('template::' . setting(config('settings.product.design'),'product.default'));
     }
 
     public function changeQuantity($quantity)
