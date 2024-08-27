@@ -62,6 +62,12 @@ class ProductResource extends Resource
                     ->native('false')->translateLabel(),
             ];
         }
+        $contractorField = [];
+        if (Module::find('Contractor') && Module::find('Contractor')->isEnabled()) {
+            $contractorField = [
+                Schema::getContractor()
+            ];
+        }
         $manufacturerField = [];
         if (Module::find('Manufacturer') && Module::find('Manufacturer')->isEnabled()) {
             $manufacturerField = [
@@ -78,6 +84,7 @@ class ProductResource extends Resource
                         Schema::getStatus(),
                         Schema::getSku(),
                         ...$categoryField,
+                        ...$contractorField,
                         ...$manufacturerField,
                         Schema::getPrice(),
                         Schema::getImage('images', isMultiple: true),

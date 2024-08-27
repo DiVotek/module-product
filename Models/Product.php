@@ -56,7 +56,9 @@ class Product extends Model
         'template',
         'measure',
         'measure_quantity',
+        'category_id',
         'manufacturer_id',
+        'contractor_id',
     ];
 
     protected $casts = [
