@@ -32,14 +32,19 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    public static function getNavigationGroup(): ?string
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return __('Catalog');
+        return parent::getEloquentQuery()->withoutGlobalScopes();
     }
 
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Catalog');
     }
 
     public static function getModelLabel(): string
@@ -88,8 +93,8 @@ class ProductResource extends Resource
                         ...$manufacturerField,
                         Schema::getPrice(),
                         Schema::getImage('images', isMultiple: true),
-                        TextInput::make('measure')->default(setting(config('settings.product.measure'), '')),
-                        TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'), 1))->numeric(),
+                        TextInput::make('measure')->default(setting(config('settings.product.measure'),'')),
+                        TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'),1))->numeric(),
                     ]),
             ]);
     }
@@ -128,7 +133,6 @@ class ProductResource extends Resource
                     })->openUrlInNewTab(),
             ])
             ->headerActions([
-                Schema::helpAction('Product help text'),
                 Tables\Actions\Action::make('Template')
                     ->slideOver()
                     ->icon('heroicon-o-cog')
@@ -153,7 +157,7 @@ class ProductResource extends Resource
                     ->form(function ($form) {
                         return $form
                             ->schema([
-                                Schema::getModuleTemplateSelect('product'),
+                                Schema::getModuleTemplateSelect('Pages/Product'),
                                 Section::make('')->schema([
                                     Schema::getTemplateBuilder()->label(__('Template')),
                                 ]),
@@ -169,16 +173,18 @@ class ProductResource extends Resource
             ]);
     }
 
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
-    {
-        return parent::getEloquentQuery()->withoutGlobalScopes();
-    }
-
     public static function getRelations(): array
     {
-        $relations = [];
+        $relations = [
+            TranslatableRelationManager::class,
+            SeoRelationManager::class,
+            ReviewsRelationManager::class,
+        ];
         if (Module::find('Category') && Module::find('Category')->isEnabled()) {
             $relations[] = CategoryRelationManager::class;
+        }
+        if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
+            $relations[] = AttributeRelationManager::class;
         }
         if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
             $relations[] = AttributeRelationManager::class;
@@ -192,14 +198,9 @@ class ProductResource extends Resource
         if (module_enabled('Options')) {
             $relations[] = OptionValuesRelationManager::class;
         }
+        $relations[] = TemplateRelationManager::class;
         return [
-            RelationGroup::make('SEO and template', [
-                TranslatableRelationManager::class,
-                SeoRelationManager::class,
-                TemplateRelationManager::class
-            ]),
-            ReviewsRelationManager::class,
-            RelationGroup::make('Other', $relations),
+            RelationGroup::make('Seo and translates', $relations),
         ];
     }
 

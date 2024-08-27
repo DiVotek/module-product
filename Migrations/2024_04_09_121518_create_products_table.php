@@ -26,9 +26,11 @@ return new class extends Migration
             $table->double('price')->nullable();
             $table->integer('views')->default(0);
             $table->json('images')->nullable();
+            $table->string('measure')->nullable();
+            $table->string('measure_quantity')->nullable();
             Product::timestampFields($table);
         });
-        StaticPage::createSystemPage('Catalog', 'catalog',path:'catalog-component',setting_key: 'catalog');
+        StaticPage::createSystemPage('Catalog', 'catalog',path:'catalog-component');
     }
 
     /**
