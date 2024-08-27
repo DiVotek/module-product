@@ -21,13 +21,16 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->string('sku')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('contractor_id')->nullable();
             $table->unsignedBigInteger('manufacturer_id')->nullable();
             $table->double('price')->nullable();
             $table->integer('views')->default(0);
             $table->json('images')->nullable();
+            $table->string('measure')->nullable();
+            $table->string('measure_quantity')->nullable();
             Product::timestampFields($table);
         });
-        StaticPage::createSystemPage('Catalog', 'catalog',path:'catalog-component',setting_key: 'catalog');
+        StaticPage::createSystemPage('Catalog', 'catalog',path:'catalog-component');
     }
 
     /**

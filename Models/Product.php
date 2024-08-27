@@ -19,6 +19,8 @@ use App\Traits\HasTranslate;
 use App\Traits\HasViews;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Addons\Models\Addon;
+use Modules\Contractor\Models\Contractor;
 use Modules\Filter\Models\Attribute;
 use Modules\Manufacturer\Models\Manufacturer;
 use Modules\Seo\Traits\HasSeo;
@@ -56,7 +58,9 @@ class Product extends Model
         'template',
         'measure',
         'measure_quantity',
+        'category_id',
         'manufacturer_id',
+        'contractor_id',
     ];
 
     protected $casts = [
@@ -99,13 +103,19 @@ class Product extends Model
                 ->withPivot('sign', 'price');
         }
     }
-
     public function options()
     {
         if (module_enabled('Options')) {
             return $this->hasManyThrough(\Modules\Options\Models\Option::class, \Modules\Options\Models\OptionValue::class, 'id', 'id', 'id', 'option_id')
-            ->distinct();
+                ->distinct();
         }
+    }
+
+    public function contractor()
+    {
+        return Module::find('Contractor') && Module::find('Contractor')->isEnabled()
+            ? $this->belongsTo(Contractor::class, 'contractor_id')
+            : null;
     }
 
     public function manufacturer()
@@ -113,5 +123,12 @@ class Product extends Model
         return Module::find('Manufacturer') && Module::find('Manufacturer')->isEnabled()
             ? $this->belongsTo(Manufacturer::class, 'manufacturer_id')
             : null;
+    }
+
+    public function addons()
+    {
+        if (Module::find('Addons') && Module::find('Addons')->isEnabled()) {
+            return $this->belongsToMany(Addon::class, 'addon_products', 'addon_id', 'product_id')->withPivot('price');
+        }
     }
 }
