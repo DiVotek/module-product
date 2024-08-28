@@ -79,6 +79,12 @@ class ProductResource extends Resource
                 Schema::getManufacturer()
             ];
         }
+        $authorsField = [];
+        if (Module::find('Team') && Module::find('Team')->isEnabled()) {
+            $authorsField = [
+                Schema::getAuthors()
+            ];
+        }
         return $form
             ->schema([
                 Section::make()
@@ -92,7 +98,7 @@ class ProductResource extends Resource
                         ...$contractorField,
                         ...$manufacturerField,
                         Schema::getPrice(),
-                        Schema::getAuthors(),
+                        ...$authorsField,
                         Schema::getImage('images', isMultiple: true),
                         TextInput::make('measure')->default(setting(config('settings.product.measure'),'')),
                         TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'),1))->numeric(),
