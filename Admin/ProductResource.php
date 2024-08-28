@@ -92,6 +92,7 @@ class ProductResource extends Resource
                         ...$contractorField,
                         ...$manufacturerField,
                         Schema::getPrice(),
+                        Schema::getAuthors(),
                         Schema::getImage('images', isMultiple: true),
                         TextInput::make('measure')->default(setting(config('settings.product.measure'),'')),
                         TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'),1))->numeric(),
