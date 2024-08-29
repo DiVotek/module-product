@@ -193,9 +193,6 @@ class ProductResource extends Resource
         if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
             $relations[] = AttributeRelationManager::class;
         }
-        if (Module::find('Filter') && Module::find('Filter')->isEnabled()) {
-            $relations[] = AttributeRelationManager::class;
-        }
         if (Module::find('Promotions') && Module::find('Promotions')->isEnabled()) {
             $relations[] = StickerRelationManager::class;
         }
