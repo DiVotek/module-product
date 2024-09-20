@@ -62,12 +62,15 @@ class Product extends Model
         'measure_quantity',
         'category_id',
         'manufacturer_id',
+        'category_id',
+        'custom',
         'contractor_id',
     ];
 
     protected $casts = [
         'images' => 'array',
         'template' => 'array',
+        'custom' => 'array',
     ];
 
     public static function getDb(): string

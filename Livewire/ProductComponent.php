@@ -14,9 +14,12 @@ class ProductComponent extends Component
     public $options;
     public array $selectedOptions;
     public $price;
+    public $breadcrumbs;
+    public $productAttributes;
 
-    public function mount(Product $entity)
+    public function mount(Product $entity, $breadcrumbs = [])
     {
+        $this->breadcrumbs = $breadcrumbs;
         $this->product = $entity;
         $this->options = [];
         $this->selectedOptions = [];
@@ -28,6 +31,7 @@ class ProductComponent extends Component
                 }
             }
         }
+        $this->productAttributes = [];
     }
     #[Computed]
     public function price()
@@ -52,7 +56,7 @@ class ProductComponent extends Component
 
     public function render()
     {
-        return view('template::' . setting(config('settings.product.design'),'product.default'));
+        return view('template::' . setting(config('settings.product.design'), 'product.default'));
     }
 
     public function changeQuantity($quantity)

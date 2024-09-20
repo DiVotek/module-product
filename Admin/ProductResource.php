@@ -7,6 +7,7 @@ use App\Filament\Resources\TranslateResource\RelationManagers\TranslatableRelati
 use App\Models\Setting;
 use App\Services\Schema;
 use App\Services\TableSchema;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -102,6 +103,11 @@ class ProductResource extends Resource
                         Schema::getImage('images', isMultiple: true),
                         TextInput::make('measure')->default(setting(config('settings.product.measure'),'')),
                         TextInput::make('measure_quantity')->default(setting(config('settings.product.measure_quantity'),1))->numeric(),
+                        Repeater::make('custom')->label(__('Custom fields'))
+                            ->schema([
+                                TextInput::make('name'),
+                                TextInput::make('value'),
+                            ])->default([]),
                     ]),
             ]);
     }
