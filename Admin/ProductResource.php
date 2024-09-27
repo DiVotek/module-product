@@ -170,7 +170,7 @@ class ProductResource extends Resource
                     ->form(function ($form) {
                         return $form
                             ->schema([
-                                Schema::getModuleTemplateSelect('Pages/Product'),
+                                Schema::getModuleTemplateSelect('product'),
                                 Section::make('')->schema([
                                     Schema::getTemplateBuilder()->label(__('Template')),
                                 ]),
